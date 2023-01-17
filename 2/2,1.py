@@ -1,7 +1,7 @@
 
 from keras.datasets import mnist
 (train_images, train_labels),(test_images,test_labels)=mnist.load_data()
-# print(train_images.shape)
+print(train_images.shape)
 # print(len(test_labels))
 
 # print(test_images.shape) #shape=shape, dtype=unit8, ndim=liczba osi
@@ -28,7 +28,7 @@ train_labels=to_categorical(train_labels)
 test_labels=to_categorical(test_labels)
 
 # #train network
-# network.fit(train_images,train_labels,epochs=5,batch_size=128)
+network.fit(train_images,train_labels,epochs=5,batch_size=128)
 
 # #test
 # test_loss, test_acc=network.evaluate(test_images,test_labels)
