@@ -17,23 +17,23 @@ from keras import layers
 
 # x=np.array([1,2]) #wektor
 # W=np.array([[1,2],[1,2]])#macierz
-# x=[]
-# y=[]
-# w=[]
-# for i in range(0,200):
-#     xn=i-100
-#     yn=2*xn**2+xn+1
-#     x.append(xn)
-#     y.append(yn)
-# w=np.array([x,y])
-# w=np.transpose(w)
-# print(w.shape)
+x=[]
+y=[]
+w=[]
+for i in range(0,200):
+    xn=i-100
+    yn=2*xn**2+xn+1
+    x.append(xn)
+    y.append(yn)
+w=np.array([x,y])
+w=np.transpose(w)
+print(w.shape)
 
-# network= models.Sequential()
-# network.add(layers.Dense(512,activation='relu',input_shape=(2,19902)))
-# network.add(layers.Dense(10,activation='softmax'))
-# network.compile(optimizer='rmsprop',
-#     loss='categorical_crossentropy',
-#     metrics=['accuracy'])
-# w=to_categorical(w)
-# network.fit(w)
+network= models.Sequential()
+network.add(layers.Dense(512,activation='relu',input_shape=(2,19902)))
+network.add(layers.Dense(10,activation='softmax'))
+network.compile(optimizer='rmsprop',
+    loss='categorical_crossentropy',
+    metrics=['accuracy'])
+w=to_categorical(w)
+network.fit(w)
