@@ -30,10 +30,61 @@ w=np.transpose(w)
 print(w.shape)
 
 network= models.Sequential()
-network.add(layers.Dense(512,activation='relu',input_shape=(2,19902)))
-network.add(layers.Dense(10,activation='softmax'))
+# network.add(layers.Dense(512,activation='relu',input_shape=(2,19902)))
+# network.add(layers.Dense(10,activation='softmax'))
 network.compile(optimizer='rmsprop',
     loss='categorical_crossentropy',
     metrics=['accuracy'])
-w=to_categorical(w)
-network.fit(w)
+# w=to_categorical(w)
+# network.fit(w[:,0],w[:,1],epochs=100)
+
+#rebuild
+model=models.Sequential()
+
+model.compile(optimizer='rmsprop',
+                loss='mse',
+                metrics=['acc'])
+# w=to_categorical(w)
+model.fit(w[:,0],w[:,1],epochs=100,verbose=0)#verbose = 0 silent
+trash,results=model.evaluate(w[:,0],w[:,1])
+print("acc100:",results) #0.57
+
+# model.fit(w[:,0],w[:,1],epochs=1000,verbose=0)#verbose = 0 silent
+# trash,results=model.evaluate(w[:,0],w[:,1])
+# print("acc1000:",results) #0.57
+
+#ok change y
+#clear all
+x,y,w=[],[],[]
+for i in range(200):
+    x.append((i-100))
+    y.append((x[i]**2))
+   
+w=np.array([x,y])
+w=np.transpose(w)
+model.fit(w[:,0],w[:,1],epochs=100,verbose=0)#verbose = 0 silent
+trash,results=model.evaluate(w[:,0],w[:,1])
+print("acc100:",results) #0.57
+
+#ok change x to start from 0
+x,y,w=[],[],[]
+for i in range(200):
+    x.append(i)
+    y.append((2*x[i]**2+x[i]+1))
+   
+w=np.array([x,y])
+w=np.transpose(w)
+model.fit(w[:,0],w[:,1],epochs=100,verbose=0)#verbose = 0 silent
+trash,results=model.evaluate(w[:,0],w[:,1])
+print("acc100:",results) #1
+
+#and little random
+w=np.random.rand(200,2)
+w=np.array([x,y])
+w=np.transpose(w)
+model.fit(w[:,0],w[:,1],epochs=100,verbose=0)#verbose = 0 silent
+trash,results=model.evaluate(w[:,0],w[:,1])
+print("accrand:",results) #1
+
+
+
