@@ -30,20 +30,21 @@ w=np.transpose(w)
 print(w.shape)
 
 network= models.Sequential()
-# network.add(layers.Dense(512,activation='relu',input_shape=(2,19902)))
-# network.add(layers.Dense(10,activation='softmax'))
+network.add(layers.Dense(512,activation='relu',input_dim=1))
+network.add(layers.Dense(10,activation='softmax'))
 network.compile(optimizer='rmsprop',
-    loss='categorical_crossentropy',
+    loss='mse',
     metrics=['accuracy'])
 # w=to_categorical(w)
-# network.fit(w[:,0],w[:,1],epochs=100)
+network.fit(w[:,0],w[:,1],epochs=100,verbose=0)
 
 #rebuild
 model=models.Sequential()
-
+model.add(layers.Dense(10,input_dim=1))
 model.compile(optimizer='rmsprop',
                 loss='mse',
                 metrics=['acc'])
+
 # w=to_categorical(w)
 model.fit(w[:,0],w[:,1],epochs=100,verbose=0)#verbose = 0 silent
 trash,results=model.evaluate(w[:,0],w[:,1])
@@ -80,11 +81,20 @@ print("acc100:",results) #1
 
 #and little random
 w=np.random.rand(200,2)
+# print(w)
 w=np.array([x,y])
 w=np.transpose(w)
 model.fit(w[:,0],w[:,1],epochs=100,verbose=0)#verbose = 0 silent
 trash,results=model.evaluate(w[:,0],w[:,1])
 print("accrand:",results) #1
+#why?
+model2=models.Sequential()
+model2.add(layers.Dense(10,input_dim=1))
 
-
+model2.compile(optimizer='rmsprop',
+                loss='mse',
+                metrics=['acc'])
+model2.fit(w[:,0],w[:,1],epochs=100,verbose=0)#verbose = 0 silent
+trash,results=model2.evaluate(w[:,0],w[:,1])
+print("accrand:",results) #1
 
