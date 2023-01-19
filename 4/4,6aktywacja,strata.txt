@@ -1,0 +1,8 @@
+aktywacja
+sigmoid:binarna,wieloetykietowa i wieloklasowa, regresja wartosci od 0 do1
+softmax: jednoetykietowa i wieloklasowa
+
+funkcja straty
+mse:regresja wartosci dowolna
+binary_crossentropy: binarna,wieloetykietowa i wieloklasowa,regresja wartosci od 0 do1
+categorical_crossentropy: jednoetykietowa i wieloklasowa
