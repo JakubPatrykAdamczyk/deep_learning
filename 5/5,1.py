@@ -39,4 +39,3 @@ _,test_acc=model.evaluate(test_images,test_labels)
 print(test_acc)
 print(model.summary())
 
-a
