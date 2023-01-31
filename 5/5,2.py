@@ -145,3 +145,87 @@ plt.plot(epochs,val_acc,'b',label='Dokladnosc walidacji')
 plt.legend( )
 plt.show
 
+
+#image data generator
+datagen=ImageDataGenerator( 
+                            rotation_range=40,
+                            width_shift_range=0.2,
+                            height_shift_range=0.2,
+                            shear_range=0.2,
+                            zoom_range=0.2,
+                            horizontal_flip=True,
+                            fill_mode='nearest')
+
+from keras.preprocessing import image #edycja obrazów
+
+frames=[os.path.join(train_cat_dir,fname) for fname in os.listdir(train_cat_dir)]
+img=image.load_img(path, target_size=(150,150))
+x=image.img_to_array(img)
+x=x.reshape((1,)+x.shape)
+
+i=0
+for batch in datagen.flow(x,batch_size=1):
+    plt.figure(i)
+    imgplot=plt.imshow(image.array_to_img(batch[0]))
+    i+=1
+    if i%4==0:break
+plt.show()
+
+# nowy model z dropout
+model=models.Sequential()
+model.add(layers.Conv2D(32,(3,3),activation='relu',input_shape=(150,150,3)))
+
+model.add(layers.MaxPool2D((2,2)))
+model.add(layers.Conv2D(64,(3,3),activation='relu'))
+
+model.add(layers.MaxPool2D((2,2)))
+model.add(layers.Conv2D(128,(3,3),activation='relu'))
+
+model.add(layers.MaxPool2D((2,2)))
+model.add(layers.Conv2D(128,(3,3),activation='relu'))
+
+model.add(layers.MaxPool2D((2,2)))
+model.add(layers.Flatten())
+
+model.add(layers.Dropout(0.5))
+
+model.add(layers.Dense(512,activation='relu'))
+model.add(layers.Dense(1,activation='sigmoid'))
+
+#kompilacja
+model.compile(optimizer='rmsprop',
+    loss='binary_crossentropy',
+    metrics=['accuracy'])
+
+train_datagen=ImageDataGenerator(rescale=1./255,
+                                rotation_range=40,
+                                width_shift_range=0.2,
+                                height_shift_range=0.2,
+                                shear_range=0.2,
+                                zoom_range=0.2,
+                                horizontal_flip=True)
+
+test_datagem=ImageDataGenerator(rescale=1./255)
+
+
+train_generator=train_datagen.flow_from_directory(
+    train_dir,
+    target_size=(150,150),
+    batch_size=32,
+    class_mode='binary')
+
+validation_generator=validation_datagen.flow_from_directory(
+    train_dir,
+    target_size=(150,150),
+    batch_size=32,
+    class_mode='binary')
+
+#trening
+history=model.fit_generator(
+    train_generator,
+    steps_per_epoch=100,
+    epochs=100,
+    validation_data=validation_generator,
+    validation_steps=50,
+    verbose=0)
+model.save('cat_and_dog_2.h5')
